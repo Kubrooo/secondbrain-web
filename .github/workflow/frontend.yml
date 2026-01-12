@@ -1,0 +1,35 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    # Cek apakah kode ada error formatting/syntax
+    - name: Linting
+      run: npm run lint
+
+    # Jalankan Vitest
+    - name: Run Unit Tests
+      run: npm test -- --run # flag --run biar gak watching mode
+    
+    # Cek apakah project bisa di-build ke production
+    - name: Build Check
+      run: npm run build
