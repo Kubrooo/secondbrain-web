@@ -1,16 +1,75 @@
-# React + Vite
+# SecondBrain Web Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend user interface for the SecondBrain application. This Single Page Application (SPA) is built with React and Vite, featuring a minimalist design system powered by Tailwind CSS.
 
-Currently, two official plugins are available:
+**Live Demo:** https://secondbrain-web-theta.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+- **Framework:** React
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS (v3)
+- **Routing:** React Router DOM
+- **Testing:** Vitest & React Testing Library
+- **Deployment:** Vercel
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Prerequisites
 
-## Expanding the ESLint configuration
+To run this project locally, ensure you have the following installed:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v18 or higher)
+- npm (Node Package Manager)
+
+## Installation
+
+1. Clone the repository
+   git clone <your-frontend-repo-url>
+   cd secondbrain-web
+
+2. Install dependencies
+   npm install
+
+3. Start the development server
+   npm run dev
+
+The application will run at http://localhost:5173.
+
+## Available Scripts
+
+- npm run dev
+  Starts the development server with Hot Module Replacement (HMR).
+
+- npm run build
+  Builds the app for production to the "dist" folder.
+
+- npm run preview
+  Locally preview the production build.
+
+- npm test
+  Runs unit tests using Vitest.
+
+- npm run lint
+  Runs ESLint to check for code quality issues.
+
+## Project Structure
+```bash
+secondbrain-web/
+├── public/            # Static assets
+├── src/
+│   ├── components/    # Reusable UI components
+│   ├── pages/         # Page views (Home, AddNote)
+│   ├── App.jsx        # Main layout and routing logic
+│   ├── main.jsx       # Application entry point
+│   └── index.css      # Global styles and Tailwind directives
+├── .github/workflows  # CI/CD configurations
+├── tailwind.config.js # Tailwind CSS configuration
+├── vite.config.js     # Vite configuration
+└── package.json       # Dependencies and scripts
+```
+## Backend Integration
+
+This frontend is designed to consume the SecondBrain API. Ensure the backend server is running locally on port 3000 (default) during development to enable data persistence features.
+
+## License
+
+This project is for educational purposes.
