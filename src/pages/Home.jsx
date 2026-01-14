@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -26,22 +27,38 @@ export default function Home() {
     fetchNotes();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Yakin mau menghapus catatan ini?")) return;
+  const handleDelete = (id) => {
+    // Tampilkan Konfirmasi Mewah
+    Swal.fire({
+      title: "Yakin mau hapus?",
+      text: "Catatan ini tidak bisa dikembalikan loh!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000000", // Hitam (sesuai tema)
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Hapus!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`http://localhost:3000/notes/${id}`, {
+            method: "DELETE",
+          });
 
-    try {
-      const res = await fetch(`http://localhost:3000/notes/${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        fetchNotes();
-      } else {
-        alert("Gagal Menghapus");
+          if (res.ok) {
+            Swal.fire({
+              title: "Terhapus!",
+              text: "Catatan berhasil dimusnahkan.",
+              icon: "success",
+              confirmButtonColor: "#000000",
+            });
+            fetchNotes(); // Refresh data
+          }
+        } catch (error) {
+          Swal.fire("Error", "Gagal menghapus data", "error");
+        }
       }
-    } catch (error) {
-      alert("Terjadi kesalahan server");
-    }
+    });
   };
 
   if (loading) return <div className="text-center mt-20">Loading data...</div>;
