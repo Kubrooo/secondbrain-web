@@ -6,19 +6,43 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchNotes = () => {
     fetch("http://localhost:3000/notes")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Gagal mengambil data");
-        }
-        return response.json();
+      .then((res) => {
+        if (!res.ok) throw new Error("Gagal mengambil data");
+        return res.json();
       })
       .then((data) => {
         setNotes(data);
         setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchNotes();
   }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Yakin mau menghapus catatan ini?")) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/notes/${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        fetchNotes();
+      } else {
+        alert("Gagal Menghapus");
+      }
+    } catch (error) {
+      alert("Terjadi kesalahan server");
+    }
+  };
 
   if (loading) return <div className="text-center mt-20">Loading data...</div>;
   if (error)
@@ -28,7 +52,6 @@ export default function Home() {
     <div>
       <h2 className="text-2xl font-bold mb-6">Catatan Saya</h2>
 
-      {/* Jika catatan kosong */}
       {notes.length === 0 ? (
         <div className="text-center p-10 border-2 border-dashed border-gray-300 rounded-lg">
           <p className="text-gray-500 mb-4">Belum ada catatan.</p>
@@ -37,18 +60,35 @@ export default function Home() {
           </Link>
         </div>
       ) : (
-        /* Jika ada data, lakukan looping (mapping) */
         <div className="grid gap-4">
           {notes.map((note) => (
             <div
               key={note.id}
-              className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition"
+              className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition relative group"
             >
               <h3 className="font-bold text-lg mb-2">{note.title}</h3>
-              <p className="text-gray-600 whitespace-pre-wrap">
+              <p className="text-gray-600 whitespace-pre-wrap mb-4">
                 {note.content}
               </p>
-              <div className="mt-4 text-xs text-gray-400">ID: {note.id}</div>
+
+              {/* AREA TOMBOL AKSI */}
+              <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
+                {/* Tombol Edit (Link ke halaman edit) */}
+                <Link
+                  to={`/edit/${note.id}`}
+                  className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                >
+                  Edit
+                </Link>
+
+                {/* Tombol Delete */}
+                <button
+                  onClick={() => handleDelete(note.id)}
+                  className="text-sm font-medium text-red-600 hover:text-red-800"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
