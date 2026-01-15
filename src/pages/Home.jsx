@@ -2,10 +2,22 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
+// Helper Tanggal
+const formatDate = (dateString) => {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return new Date(dateString).toLocaleDateString("id-ID", options);
+};
+
 export default function Home() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [keyword, setKeyword] = useState(""); // State Search
 
   const fetchNotes = () => {
     fetch("http://localhost:3000/notes")
@@ -28,86 +40,110 @@ export default function Home() {
   }, []);
 
   const handleDelete = (id) => {
-    // Tampilkan Konfirmasi Mewah
     Swal.fire({
       title: "Yakin mau hapus?",
-      text: "Catatan ini tidak bisa dikembalikan loh!",
+      text: "Ga bisa balik lagi loh!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#000000", // Hitam (sesuai tema)
+      confirmButtonColor: "#000",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, Hapus!",
-      cancelButtonText: "Batal",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:3000/notes/${id}`, {
+          await fetch(`http://localhost:3000/notes/${id}`, {
             method: "DELETE",
           });
-
-          if (res.ok) {
-            Swal.fire({
-              title: "Terhapus!",
-              text: "Catatan berhasil dimusnahkan.",
-              icon: "success",
-              confirmButtonColor: "#000000",
-            });
-            fetchNotes(); // Refresh data
-          }
+          Swal.fire("Terhapus!", "Catatan hilang.", "success");
+          fetchNotes();
         } catch (error) {
-          Swal.fire("Error", "Gagal menghapus data", "error");
+          Swal.fire("Error", "Gagal delete.", "error");
         }
       }
     });
   };
 
-  if (loading) return <div className="text-center mt-20">Loading data...</div>;
+  if (loading) return <div className="text-center mt-20">Loading...</div>;
   if (error)
-    return <div className="text-center mt-20 text-red-500">Error: {error}</div>;
+    return <div className="text-center mt-20 text-red-500">{error}</div>;
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">Catatan Saya</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Catatan Saya</h2>
+      </div>
 
+      {/* SEARCH BAR */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="🔍 Cari ide..."
+          className="w-full p-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black transition"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+      </div>
+
+      {/* Jika Data Kosong */}
       {notes.length === 0 ? (
         <div className="text-center p-10 border-2 border-dashed border-gray-300 rounded-lg">
           <p className="text-gray-500 mb-4">Belum ada catatan.</p>
           <Link to="/add" className="text-blue-600 font-bold hover:underline">
-            Buat catatan pertama
+            Buat baru yuk!
           </Link>
         </div>
       ) : (
+        /* DAFTAR CATATAN (DIFILTER) */
         <div className="grid gap-4">
-          {notes.map((note) => (
-            <div
-              key={note.id}
-              className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition relative group"
-            >
-              <h3 className="font-bold text-lg mb-2">{note.title}</h3>
-              <p className="text-gray-600 whitespace-pre-wrap mb-4">
-                {note.content}
-              </p>
+          {notes
+            .filter((note) => {
+              const search = keyword.toLowerCase();
+              return (
+                note.title.toLowerCase().includes(search) ||
+                note.content.toLowerCase().includes(search)
+              );
+            })
+            .map((note) => (
+              <div
+                key={note.id}
+                className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition relative"
+              >
+                <h3 className="font-bold text-lg mb-2">{note.title}</h3>
+                <p className="text-gray-600 whitespace-pre-wrap mb-4 line-clamp-3">
+                  {note.content}
+                </p>
 
-              {/* AREA TOMBOL AKSI */}
-              <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
-                {/* Tombol Edit (Link ke halaman edit) */}
-                <Link
-                  to={`/edit/${note.id}`}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-800"
-                >
-                  Edit
-                </Link>
+                {/* TANGGAL CANTIK */}
+                <p className="text-xs text-gray-400 mb-4 font-mono">
+                  {formatDate(note.createdAt)}
+                </p>
 
-                {/* Tombol Delete */}
-                <button
-                  onClick={() => handleDelete(note.id)}
-                  className="text-sm font-medium text-red-600 hover:text-red-800"
-                >
-                  Delete
-                </button>
+                <div className="flex gap-2 border-t pt-4 border-gray-100">
+                  <Link
+                    to={`/edit/${note.id}`}
+                    className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(note.id)}
+                    className="text-sm font-medium text-red-600 hover:text-red-800"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+
+          {/* Pesan jika hasil pencarian nihil */}
+          {notes.filter((n) =>
+            n.title.toLowerCase().includes(keyword.toLowerCase())
+          ).length === 0 &&
+            keyword !== "" && (
+              <p className="text-center text-gray-500 mt-4">
+                Tidak ditemukan catatan dengan kata kunci "{keyword}"
+              </p>
+            )}
         </div>
       )}
     </div>
