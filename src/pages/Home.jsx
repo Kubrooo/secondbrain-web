@@ -20,7 +20,7 @@ export default function Home() {
   const [keyword, setKeyword] = useState(""); // State Search
 
   const fetchNotes = () => {
-    fetch("http://localhost:3000/notes")
+    fetch(`${import.meta.env.VITE_API_URL}/notes`)
       .then((res) => {
         if (!res.ok) throw new Error("Gagal mengambil data");
         return res.json();
@@ -137,7 +137,7 @@ export default function Home() {
 
           {/* Pesan jika hasil pencarian nihil */}
           {notes.filter((n) =>
-            n.title.toLowerCase().includes(keyword.toLowerCase())
+            n.title.toLowerCase().includes(keyword.toLowerCase()),
           ).length === 0 &&
             keyword !== "" && (
               <p className="text-center text-gray-500 mt-4">

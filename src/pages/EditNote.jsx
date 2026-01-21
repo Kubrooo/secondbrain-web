@@ -11,7 +11,7 @@ export default function EditNote() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/notes/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/notes/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Catatan tidak ditemukan");
         return res.json();
@@ -31,7 +31,7 @@ export default function EditNote() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:3000/notes/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/notes/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, content }),
