@@ -51,7 +51,7 @@ export default function Home() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await fetch(`http://localhost:3000/notes/${id}`, {
+          await fetch(`${import.meta.env.VITE_API_URL}/notes/${id}`, {
             method: "DELETE",
           });
           Swal.fire("Terhapus!", "Catatan hilang.", "success");
