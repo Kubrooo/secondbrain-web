@@ -72,4 +72,4 @@ This frontend is designed to consume the SecondBrain API. Ensure the backend ser
 
 ## License
 
-This project is for educational purposes.
+This project is for educational purposes. 
