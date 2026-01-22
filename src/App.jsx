@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import AddNote from './pages/AddNote';
 import EditNote from './pages/EditNote';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
             <Route path="/add" element={<AddNote />} />
             {/* Rute Baru dengan Parameter ID */}
             <Route path="/edit/:id" element={<EditNote />} /> 
+            
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </div>
