@@ -1,63 +1,61 @@
-# SecondBrain Web Client
+# SecondBrain Web Client 🧠
 
 The frontend user interface for the SecondBrain application. This Single Page Application (SPA) is built with React and Vite, featuring a minimalist design system powered by Tailwind CSS.
 
-**Live Demo:** https://secondbrain-web-theta.vercel.app/
+🚀 **Live Demo:** [https://secondbrain-web-theta.vercel.app/](https://secondbrain-web-theta.vercel.app/)
 
-## Tech Stack
+---
+
+## 📸 Interface Preview
+
+Berikut adalah tampilan antarmuka aplikasi yang telah berjalan:
+
+| **Dashboard Home** | **Add New Note** |
+| :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/9415533e-51ad-449b-bf96-7942feaeb52a" width="100%" alt="Home Page"> | <img src="https://github.com/user-attachments/assets/2dc8aedb-9916-4386-bf24-0c975bdf24e6" width="100%" alt="Add Note Page"> |
+
+---
+
+## 🛠️ Tech Stack
 
 - **Framework:** React
 - **Build Tool:** Vite
 - **Styling:** Tailwind CSS (v3)
 - **Routing:** React Router DOM
-- **Testing:** Vitest & React Testing Library
 - **Deployment:** Vercel
 
-## Prerequisites
+## ⚙️ Prerequisites
 
 To run this project locally, ensure you have the following installed:
 
 - Node.js (v18 or higher)
 - npm (Node Package Manager)
 
-## Installation
+## 💻 Installation
 
-1. Clone the repository
-   git clone <your-frontend-repo-url>
+1. **Clone the repository**
+   git clone https://github.com/username-kamu/secondbrain-web.git
    cd secondbrain-web
 
-2. Install dependencies
+2. **Install dependencies**
    npm install
 
-3. Start the development server
+3. **Setup Environment**
+   Create a .env file in the root directory and add your backend URL:
+   VITE_API_URL="https://secondbrain-api-kamu.vercel.app"
+
+4. **Start the development server**
    npm run dev
 
 The application will run at http://localhost:5173.
 
-## Available Scripts
+## 📂 Project Structure
 
-- npm run dev
-  Starts the development server with Hot Module Replacement (HMR).
-
-- npm run build
-  Builds the app for production to the "dist" folder.
-
-- npm run preview
-  Locally preview the production build.
-
-- npm test
-  Runs unit tests using Vitest.
-
-- npm run lint
-  Runs ESLint to check for code quality issues.
-
-## Project Structure
-```bash
 secondbrain-web/
 ├── public/            # Static assets
 ├── src/
 │   ├── components/    # Reusable UI components
-│   ├── pages/         # Page views (Home, AddNote)
+│   ├── pages/         # Page views (Home, AddNote, NotFound)
 │   ├── App.jsx        # Main layout and routing logic
 │   ├── main.jsx       # Application entry point
 │   └── index.css      # Global styles and Tailwind directives
@@ -65,11 +63,16 @@ secondbrain-web/
 ├── tailwind.config.js # Tailwind CSS configuration
 ├── vite.config.js     # Vite configuration
 └── package.json       # Dependencies and scripts
-```
-## Backend Integration
 
-This frontend is designed to consume the SecondBrain API. Ensure the backend server is running locally on port 3000 (default) during development to enable data persistence features.
+## 🔌 Backend Integration
 
-## License
+This frontend is designed to consume the **SecondBrain API**. Ensure the backend server is running or the `VITE_API_URL` environment variable is pointing to a valid production server.
 
-This project is for educational purposes. 
+## 📄 License
+
+This project is for educational purposes.
+
+---
+<center>
+  Designed & Built with ❤️ by <b>Ardiansyah</b>
+</center>
