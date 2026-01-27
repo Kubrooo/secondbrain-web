@@ -62,10 +62,10 @@ secondbrain-web/
 ├── vite.config.js     # Vite configuration
 └── package.json       # Dependencies and scripts
 ```
-## 🔌 Backend Integration
+## Backend Integration
 
 This frontend is designed to consume the **SecondBrain API**. Ensure the backend server is running or the `VITE_API_URL` environment variable is pointing to a valid production server.
 
-## 📄 License
+## License
 
 This project is for educational purposes.
